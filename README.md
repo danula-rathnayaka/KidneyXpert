@@ -1,7 +1,6 @@
 # KidneyXpert
 
-# How to run?
-### STEPS:
+### How to run?
 
 Clone the repository
 
