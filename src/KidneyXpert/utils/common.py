@@ -12,25 +12,26 @@ from typing import Any
 import base64
 
 
-@ensure_annotations
 def read_yaml(path_to_yaml: Path) -> ConfigBox:
     """
     Read config from yaml file
     :param path_to_yaml: path to yaml file
     :return: data of file
     """
-    try:
-        with open(path_to_yaml) as yaml_file:
-            content = yaml.safe_load(yaml_file)
-            logger.info(f"yaml file: {path_to_yaml} loaded successfully")
-            return ConfigBox(content)
-    except BoxValueError:
-        raise ValueError("yaml file is empty")
-    except Exception as e:
-        raise e
+    while True:
+        try:
+            with open(path_to_yaml) as yaml_file:
+                content = yaml.safe_load(yaml_file)
+                logger.info(f"yaml file: {path_to_yaml} loaded successfully")
+                return ConfigBox(content)
+        except BoxValueError:
+            raise ValueError("yaml file is empty")
+        except FileNotFoundError:
+            path_to_yaml = Path("../") / path_to_yaml
+        except Exception as e:
+            raise e
 
 
-@ensure_annotations
 def create_directories(path_to_directories: list, verbose=True) -> None:
     """
     Create a list of directories
@@ -39,9 +40,9 @@ def create_directories(path_to_directories: list, verbose=True) -> None:
     :return: None
     """
     for path in path_to_directories:
-        os.makedirs(path, exist_ok=True)
-    if verbose:
-        logger.info(f"Directory created at: {path}")
+        os.makedirs(Path("../") / path, exist_ok=True)
+        if verbose:
+            logger.info(f"Directory created at: {path}")
 
 
 @ensure_annotations
@@ -52,7 +53,6 @@ def save_json(path: Path, data: dict) -> None:
     :param data: Data to be saved in the json file
     :return: None
     """
-
     with open(path, "w") as f:
         json.dump(data, f, indent=4)
 

@@ -18,3 +18,5 @@ logging.basicConfig(
 )
 
 logger = logging.getLogger("KidneyXpertLogger")
+
+relative_path = "../../"
