@@ -1,8 +1,13 @@
+import os
 from pathlib import Path
 
 from KidneyXpert.constants import CONFIG_FILE_PATH, PARAMS_FILE_PATH
-from KidneyXpert.utils.common import read_yaml, create_directories
-from KidneyXpert.entity.config_entity import DataIngestionConfig, PrepareBaseModelConfig, TrainingConfig
+from KidneyXpert.utils.common import read_yaml, create_directories, save_json
+from KidneyXpert.entity.config_entity import DataIngestionConfig, PrepareBaseModelConfig, TrainingConfig, \
+    EvaluationConfig
+from dotenv import load_dotenv
+
+load_dotenv()
 
 
 class ConfigurationManager:
@@ -63,3 +68,14 @@ class ConfigurationManager:
             params_is_augmentation=params.AUGMENTATION,
             params_image_size=params.IMAGE_SIZE
         )
+
+    def get_evaluation_config(self) -> EvaluationConfig:
+        eval_config = EvaluationConfig(
+            path_of_model="artifacts/training/model.h5",
+            training_data="artifacts/data_ingestion/kidney-ct-scan-image",
+            mlflow_uri=os.getenv("MLFLOW_TRACKING_URI"),
+            all_params=self.params,
+            params_image_size=self.params.IMAGE_SIZE,
+            params_batch_size=self.params.BATCH_SIZE
+        )
+        return eval_config
