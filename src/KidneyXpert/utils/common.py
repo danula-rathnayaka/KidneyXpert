@@ -3,7 +3,7 @@ from pathlib import Path
 
 from box.exceptions import BoxValueError
 import yaml
-from src.KidneyXpert import logger
+from KidneyXpert import logger
 import json
 import joblib
 from ensure import ensure_annotations
@@ -45,7 +45,6 @@ def create_directories(path_to_directories: list, verbose=True) -> None:
             logger.info(f"Directory created at: {path}")
 
 
-@ensure_annotations
 def save_json(path: Path, data: dict) -> None:
     """
     Save data to json file
