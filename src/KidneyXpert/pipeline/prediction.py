@@ -25,6 +25,6 @@ class PredictionPipeline:
 
             return [{"result": prediction}]
         except OSError as e:
-            return [{"result": "Model not found. Please train the model first."}]
+            return [{"result": "Model not found. Please train the model first. (use /train API endpoint)"}]
         except Exception as e:
             raise e
